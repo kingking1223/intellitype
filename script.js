@@ -40,10 +40,70 @@ function getPara() {
         typingText.innerHTML += span;
     });
     typingText.querySelectorAll("span")[0].classList.add("active");
-    document.addEventListener("keydown", () => inputField.focus())
-    typingText.addEventListener("click", () => inputField.focus())
+    document.addEventListener("keydown", () => inputField.focus());
+    typingText.addEventListener("click", () => inputField.focus());
 }
 
 function init() {
+    let chars = typingText.querySelectorAll("span");
+    let typedChar = inputField.value.split("")[charIndex];
+    if (charIndex < chars.length - 1 && timeLeft > 0) {
+        if (!isTyping) {
+            timer = setInterval(initTimer, 1000);
+            isTyping = true;
+        } if (typedChar === null) {
+            if (charIndex > 0) {
+                charIndex--;
+                if (chars[charIndex].classList.contains("incorrect")) {
+                    mistakes--;
+                }
+                chars[charIndex].classList.remove("correct", "incorrect");
+            }
+        } else {
+            if (chars[charIndex].innerText === typedChar) {
+                chars[charIndex].classList.add("correct");
+            } else {
+                mistakes++;
+                chars[charIndex].classList.add("incorrect")
+            }
+            charIndex++;
+        }
+        chars.forEach(span => span.classList.remove("active"));
+        chars[charIndex].classList.add("active");
 
+        let wpm = Math.round(((charIndex - mistakes) / 5) / (maxTime - timeLeft) * 60);
+        wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm;
+
+        wordpmText.innerText = wpm;
+        charpmText.innerText = charIndex - mistakes;
+    } else {
+        clearInterval(timer);
+        inputField.value = "";
+    }
 }
+
+function initTimer() {
+    if (timeLeft > 0) {
+        timeLeft--;
+        timeLftTxt.innerText = timeLeft;
+        let wpm = Math.round(((charIndex - mistakes) / 5) / (maxTime - timeLeft) * 60);
+        wordpmText.innerText = wpm;
+    } else {
+        clearInterval(timer);
+    }
+}
+
+function reset() {
+    getPara();
+    clearInterval(timer);
+    timeLeft = maxTime;
+    charIndex  = mistakes = isTyping = 0;
+    inputField.value = "";
+    timeLftTxt.innerText = timeLeft;
+    wordpmText.innerText = 0;
+    charpmText.innerText = 0;
+}
+
+getPara();
+inputField.addEventListener("input", init)
+restartBtn.addEventListener("click", reset);
