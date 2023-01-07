@@ -44,22 +44,101 @@ const timeTag = document.querySelector(".time span b")
 const mistakeTag = document.querySelector(".mistake span")
 const wpmTag = document.querySelector(".wpm span")
 const cpmTag = document.querySelector(".cpm span")
+const wordsBtn = document.getElementById("words")
+const quoteBtn = document.getElementById("quote")
+const shortBtn = document.getElementById("short")
+const normalBtn = document.getElementById("normal")
+const longBtn = document.getElementById("long")
+const tenBtn = document.getElementById("ten")
+const twentyBtn = document.getElementById("twenty")
+const twentyfiveBtn = document.getElementById("twentyfive")
+const fiftyBtn = document.getElementById("fifty")
+const hunredBtn = document.getElementById("hundreds")
+const lengthBar = document.getElementById("length")
+const wordcountBar = document.getElementById("wordcount")
 
 let timer;
 let maxTime = 60;
 let timeLeft = maxTime;
 let charIndex = mistakes = isTyping = 0;
+let mode = "quote";
+let wordcount = 10;
+let quoteMaxLength = 10;
+let quoteMinLength = 0;
+
+function gotoWords() {
+    mode = "words";
+    lengthBar.style.display = "none";
+    wordcountBar.style.display = "flex";
+}
+
+function gotoQuote() {
+    mode = "quote";
+    lengthBar.style.display = "flex";
+    wordcountBar.style.display = "none";
+}
+
+function gotoShort() {
+    quoteMinLength = 0;
+    quoteMaxLength = 10;
+    loadParagraph()
+}
+
+function gotoNormal() {
+    quoteMinLength = 10;
+    quoteMaxLength = 25;
+    loadParagraph()
+}
+
+function gotoLong() {
+    quoteMinLength = 25;
+    quoteMaxLength = 999;
+    loadParagraph()
+}
+
+function gotoTen() {
+    wordcount = 10;
+}
+
+function gotoTwenty() {
+    wordcount = 20;
+}
+
+function gotoTwentyfive() {
+    wordcount = 25;
+}
+
+function gotoFifty() {
+    wordcount = 50;
+}
+
+function gotoHundred() {
+    wordcount = 100;
+}
+
+function countWords(str) {
+    const arr = str.split(' ');
+    return arr.filter(word => word !== '').length;
+}
 
 function loadParagraph() {
-    const ranIndex = Math.floor(Math.random() * paragraphs.length);
-    typingText.innerHTML = "";
-    paragraphs[ranIndex].split("").forEach(char => {
-        let span = `<span>${char}</span>`
-        typingText.innerHTML += span;
-    });
-    typingText.querySelectorAll("span")[0].classList.add("active");
-    document.addEventListener("keydown", () => inpField.focus());
-    typingText.addEventListener("click", () => inpField.focus());
+    if (mode === "quote") {
+        const ranIndex = Math.floor(Math.random() * paragraphs.length);
+        if (countWords(paragraphs[ranIndex]) > quoteMaxLength || countWords(paragraphs[ranIndex]) < quoteMinLength) {
+            loadParagraph()
+        } else {
+            typingText.innerHTML = "";
+            paragraphs[ranIndex].split("").forEach(char => {
+                let span = `<span>${char}</span>`
+                typingText.innerHTML += span;
+            });
+            typingText.querySelectorAll("span")[0].classList.add("active");
+            document.addEventListener("keydown", () => inpField.focus());
+            typingText.addEventListener("click", () => inpField.focus());
+        }
+    } else {
+
+    }
 }
 
 function initTyping() {
@@ -130,5 +209,15 @@ function resetGame() {
 }
 
 loadParagraph();
+wordsBtn.addEventListener("click", gotoWords);
+quoteBtn.addEventListener("click", gotoQuote);
+shortBtn.addEventListener("click", gotoShort);
+normalBtn.addEventListener("click", gotoNormal);
+longBtn.addEventListener("click", gotoLong);
+tenBtn.addEventListener("click", gotoTen);
+twentyBtn.addEventListener("click", gotoTwenty);
+twentyfiveBtn.addEventListener("click", gotoTwentyfive);
+fiftyBtn.addEventListener("click", gotoFifty);
+hunredBtn.addEventListener("click", gotoHundred);
 inpField.addEventListener("input", initTyping);
 tryAgainBtn.addEventListener("click", resetGame);

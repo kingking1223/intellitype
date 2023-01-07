@@ -215,3 +215,70 @@ li:not(:first-child) span {
         margin-top: 10px;
     }
 }
+
+.top {
+    width: 100%;
+}
+
+.type {
+    margin-top: 5px;
+    display: flex;
+    padding: 12px 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    border-top: 3px solid #007acc;
+    color: white;
+}
+
+.length {
+    margin-top: 17px;
+    display: flex;
+    padding: 12px 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    border-top: 3px solid #007acc;
+    color: white;
+}
+
+.wordcount {
+    margin-top: 17px;
+    display: flex;
+    padding: 12px 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    border-top: 3px solid #007acc;
+    color: white;
+    display: none;
+}
+
+.type button,
+.length button,
+.wordcount button {
+    outline: none;
+    border: none;
+    color: #8899ff;
+    padding: 9px 9px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 15px;
+    border: 3px solid #8899ff;
+    background: none;
+    transition: transform 200ms ease;
+}
+
+.type button:active,
+.length button:active,
+.wordcount button:active {
+    transform: scale(0.88);
+}
+
+.type button:hover,
+.length button:hover,
+.wordcount button:hover {
+    background: #dedede;
+    color: #118bdd;
+}
