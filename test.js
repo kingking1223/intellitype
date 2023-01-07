@@ -37,6 +37,59 @@ const paragraphs = [
     "I have a dream that one day out in the red hills of Georgia the sons of former slaves and the sons of former slaveowners will be able to sit down together at the table of brotherhood.",
 ];
 
+const wordList = [
+    "the ",
+    "be ",
+    "of ",
+    "and ",
+    "a ",
+    "to ",
+    "in ",
+    "he ",
+    "have ",
+    "it ",
+    "that ",
+    "for ",
+    "they ",
+    "i ",
+    "with ",
+    "as ",
+    "not ",
+    "on ",
+    "she ",
+    "at ",
+    "by ",
+    "this ",
+    "we ",
+    "you ",
+    "do ",
+    "but ",
+    "from ",
+    "or ",
+    "which ",
+    "one ",
+    "would ",
+    "all ",
+    "will ",
+    "there ",
+    "say ",
+    "who ",
+    "make ",
+    "when ",
+    "can ",
+    "more ",
+    "if ",
+    "no ",
+    "man ",
+    "out ",
+    "other ",
+    "so ",
+    "what ",
+    "time ",
+    "up ",
+    "go ",
+]
+
 const typingText = document.querySelector(".typing-text p")
 const inpField = document.querySelector(".wrapper .input-field")
 const tryAgainBtn = document.querySelector(".content button")
@@ -70,12 +123,14 @@ function gotoWords() {
     mode = "words";
     lengthBar.style.display = "none";
     wordcountBar.style.display = "flex";
+    loadParagraph()
 }
 
 function gotoQuote() {
     mode = "quote";
     lengthBar.style.display = "flex";
     wordcountBar.style.display = "none";
+    loadParagraph()
 }
 
 function gotoShort() {
@@ -98,22 +153,27 @@ function gotoLong() {
 
 function gotoTen() {
     wordcount = 10;
+    loadParagraph()
 }
 
 function gotoTwenty() {
     wordcount = 20;
+    loadParagraph()
 }
 
 function gotoTwentyfive() {
     wordcount = 25;
+    loadParagraph()
 }
 
 function gotoFifty() {
     wordcount = 50;
+    loadParagraph()
 }
 
 function gotoHundred() {
     wordcount = 100;
+    loadParagraph()
 }
 
 function countWords(str) {
@@ -137,7 +197,17 @@ function loadParagraph() {
             typingText.addEventListener("click", () => inpField.focus());
         }
     } else {
-
+        typingText.innerHTML = ""
+        for (let i = 0; i < wordcount; i++) {
+            const ranIndex = Math.floor(Math.random() * wordList.length);
+            wordList[ranIndex].split("").forEach(char => {
+                let span = `<span>${char}</span>`
+                typingText.innerHTML += span;
+            });
+            typingText.querySelectorAll("span")[0].classList.add("active");
+            document.addEventListener("keydown", () => inpField.focus());
+            typingText.addEventListener("click", () => inpField.focus());
+        }
     }
 }
 
